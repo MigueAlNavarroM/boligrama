@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Resumen de Materias Seleccionadas</title>
+    <style>
+        html {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f4f4f4;
+            height: 100%;
+        }
+
+        header, footer {
+            background-color: #585858;
+            color: white;
+            padding: 15px 30px;
+            text-align: center;
+        }
+
+        .page-wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main {
+            padding: 40px;
+            background-color: white;
+            margin: 30px auto;
+            max-width: 1200px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            flex: 1;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .botones-navegacion {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .btn-navegacion {
+            background-color: #ccc;
+            color: #333;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            border: none;
+            transition: background-color 0.3s;
+        }
+
+        .btn-navegacion:hover {
+            background-color: #bbb;
+        }
+
+        .btn-imprimir {
+            background-color: #ff8c00;
+            color: white;
+            padding: 10px 20px;
+            font-size: 17px;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .btn-imprimir:hover {
+            background-color: #e07b00;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #ff8c00;
+            color: white;
+        }
+
+        .resumen-global {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="page-wrapper">
+    <header>
+        <h2>Licenciatura en Tecnologías y Sistemas de Información</h2>
+    </header>
+
+    <main>
+        <h1>Resumen de Materias Seleccionadas</h1>
+
+        <div class="botones-navegacion">
+            <a href="boligrama_nodos.php" class="btn-navegacion">← Volver al Boligrama</a>
+            <a href="boligrama.php" class="btn-navegacion">← Ir al Menú Selector</a>
+            <button class="btn-imprimir" onclick="window.print()">🖨️ Imprimir Resumen</button>
+        </div>
+
+        <table id="tablaResumen">
+            <thead>
+                <tr>
+                    <th>Nombre de la UEA</th>
+                    <th>Créditos</th>
+                    <th>Clave</th>
+                    <th>Trimestre</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <div class="resumen-global" id="resumenGlobal"></div>
+    </main>
+
+    <footer>
+        Universidad Autónoma Metropolitana - Unidad Cuajimalpa | División de Ciencias de la Comunicación y Diseño
+    </footer>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const tablaBody = document.querySelector("#tablaResumen tbody");
+        const resumenGlobal = document.getElementById("resumenGlobal");
+
+        const datos = JSON.parse(localStorage.getItem("resumenUEA")) || [];
+
+        let totalUEAs = datos.length;
+        let totalCreditos = datos.reduce((sum, uea) => sum + uea.creditos, 0);
+        let porcentaje = ((totalCreditos / 459) * 100).toFixed(2);
+
+        // Ordenar por número de trimestre
+        datos.sort((a, b) => {
+            const tA = parseInt(a.trimestre) || 0;
+            const tB = parseInt(b.trimestre) || 0;
+            return tA - tB;
+        });
+
+        datos.forEach(uea => {
+            const fila = document.createElement("tr");
+            fila.innerHTML = `
+                <td>${uea.nombre}</td>
+                <td>${uea.creditos}</td>
+                <td>${uea.clave || '-'}</td>
+                <td>${uea.trimestre || '-'}</td>
+            `;
+            tablaBody.appendChild(fila);
+        });
+
+        resumenGlobal.innerHTML = `
+            <strong>Total de UEAs:</strong> ${totalUEAs}<br>
+            <strong>Total de Créditos:</strong> ${totalCreditos} / 459<br>
+            <strong>Avance de Carrera:</strong> ${porcentaje}%
+        `;
+    });
+</script>
+
+</body>
+</html>
