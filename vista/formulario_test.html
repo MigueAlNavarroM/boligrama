@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario Test - Guardar Materia</title>
+</head>
+<body>
+    <h2>Formulario de prueba para guardar materia</h2>
+    <form action="../controlador/guardar_materia.php" method="POST">
+        <label>Clave: <input type="number" name="clave" required></label><br><br>
+        <label>Nombre: <input type="text" name="nombre" required></label><br><br>
+        <label>Créditos: <input type="number" name="creditos" required></label><br><br>
+        <label>Trimestre: 
+            <select name="trimestre" required>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <!-- Agrega más si quieres -->
+            </select>
+        </label><br><br>
+        <button type="submit">Guardar Materia</button>
+    </form>
+</body>
+</html>

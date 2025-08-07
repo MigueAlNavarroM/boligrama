@@ -35,10 +35,8 @@ CREATE TABLE UEA (
   clave INT PRIMARY KEY,
   nombre VARCHAR(100) NOT NULL,
   creditos TINYINT NOT NULL,
-  id_plan INT,
   id_trimestre INT,
   id_recomendacion INT,  -- se agrega aquí
-  FOREIGN KEY (id_plan) REFERENCES PlanEstudios(id_plan),
   FOREIGN KEY (id_trimestre) REFERENCES Trimestre(id_trimestre),
   FOREIGN KEY (id_recomendacion) REFERENCES Recomendacion(id_recomendacion)
 );
